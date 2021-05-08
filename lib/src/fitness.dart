@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 
@@ -13,12 +14,17 @@ class Fitness {
     'plugins.juyoung.dev/fitness',
   );
 
-  static Future<bool> hasPermission() async {
-    return _channel.invokeMethod('hasPermission');
+  static Future<FitnessAccess> hasPermission() async {
+
+    return _channel.invokeMethod('hasPermission').then(
+      (response) => FitnessAccess.fromJson(Map<String, dynamic>.from(response))
+      );
   }
 
-  static Future<bool> requestPermission() async {
-    return _channel.invokeMethod('requestPermission');
+  static Future<FitnessAccess> requestPermission() async {
+    return _channel.invokeMethod('requestPermission').then(
+      (response) => FitnessAccess.fromJson(Map<String, dynamic>.from(response))
+      );
   }
 
   static Future<bool> revokePermission() async {
