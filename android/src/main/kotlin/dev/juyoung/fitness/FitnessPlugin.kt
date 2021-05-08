@@ -256,7 +256,7 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
     }
 
      private fun fitnessAccessToMap(permission: Boolean): Map<String, Any> {
-         val signInAccount = GoogleSignIn.getLastSignedInAccount(context);
+         val signInAccount = getFitnessAccount()
          val email:String? = signInAccount?.getEmail()
          val cleanEmail:String = email as String
 
