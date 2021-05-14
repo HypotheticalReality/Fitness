@@ -163,10 +163,9 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
  
     private fun hasPermission(call: MethodCall, result: Result) {
 
-        val hasPermission: Boolean = isPermissionAcquired();
-        if(hasPermission) {
-            result.success(fitnessAccessToMap(hasPermission));
-        }
+        val hasPermission: Boolean = isPermissionAcquired()
+        result.success(fitnessAccessToMap(hasPermission))
+        
 
     }
 
