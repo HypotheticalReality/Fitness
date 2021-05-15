@@ -162,7 +162,12 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
     }
  
     private fun hasPermission(call: MethodCall, result: Result) {
+        Timber.i("$TAG::hasPermission")
         val hasPermission: Boolean = isPermissionAcquired()
+        Timber.i("$TAG::hasPermission $hasPermission")
+        if (hasPermission){
+            subscribe()
+        }
         result.success(fitnessAccessToMap(hasPermission))
     }
 
@@ -263,7 +268,8 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
     }
 
      private fun fitnessAccessToMap(permission: Boolean): Map<String, Any> {
-
+         Timber.i("$TAG::fitnessAccessToMap $permission")
+         Timber.i("$TAG::fitnessAccessToMap ${getFitnessEmailId()}")
          return mapOf<String, Any>(
                             "hasAccess" to permission,
                             "email" to getFitnessEmailId()
