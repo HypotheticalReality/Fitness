@@ -162,11 +162,8 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
     }
  
     private fun hasPermission(call: MethodCall, result: Result) {
-
         val hasPermission: Boolean = isPermissionAcquired()
         result.success(fitnessAccessToMap(hasPermission))
-        
-
     }
 
     private fun requestPermission(call: MethodCall, result: Result) {
@@ -254,15 +251,24 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
         )
     }
 
-     private fun fitnessAccessToMap(permission: Boolean): Map<String, Any> {
-         val signInAccount = getFitnessAccount()
-         val email:String? = signInAccount?.getEmail()
-         val cleanEmail:String = email as String
+    private fun getFitnessEmailId(): String {
+        var email = "None"
+        val signInAccount:GoogleSignInAccount = getFitnessAccount()
+        if(signInAccount.email != null) {
+            email = signInAccount.email as String
+        }
+        Timber.e("Fetched Email Id for fitness $email")
+        return email
 
-        return mapOf<String, Any>(
-            "hasAccess" to permission,
-            "email" to cleanEmail
-        )
+    }
+
+     private fun fitnessAccessToMap(permission: Boolean): Map<String, Any> {
+
+         return mapOf<String, Any>(
+                            "hasAccess" to permission,
+                            "email" to getFitnessEmailId()
+                                )
+
     }
 
     // Android OS system permission related
@@ -329,7 +335,6 @@ class FitnessPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, ActivityR
             pendingResult = null
             return false
         }
-
         subscribe()
         pendingResult?.success(fitnessAccessToMap(true))
         pendingResult = null
